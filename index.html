@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NotebookLM 高中學習應用指南</title>
+    <!-- 載入 Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 設定主要字體為 Inter 或系統預設的無襯線字體 */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            background-color: #0d1117; /* 深色背景 */
+            color: #e5e7eb; /* 淺色文字 */
+        }
+        /* 科技感的藍色主題 */
+        .tab-active {
+            border-bottom: 3px solid #3b82f6; /* 藍色底線 */
+            color: #ffffff;
+            font-weight: 600;
+        }
+        .tab-inactive:hover {
+            color: #9ca3af;
+        }
+        .feature-card {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .feature-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.2), 0 4px 6px -4px rgba(59, 130, 246, 0.1);
+        }
+        /* 表格樣式 */
+        .scenario-table th, .scenario-table td {
+            border: 1px solid #1f2937; /* 深色邊框 */
+            padding: 1rem;
+            text-align: left;
+        }
+        .scenario-table th {
+            background-color: #1f2937; /* 表頭背景 */
+            color: #93c5fd; /* 淺藍色表頭文字 */
+        }
+        .scenario-table {
+            border-collapse: collapse;
+            width: 100%;
+            border-radius: 0.5rem;
+            overflow: hidden; /* 確保圓角生效 */
+        }
+        /* 新增：任務按鈕樣式，使用較顯眼的洋紅色 (Fuchsia) */
+        .task-tab-inactive {
+            color: #f472b6; /* 亮粉色 */
+            font-weight: 600;
+        }
+        .task-tab-inactive:hover {
+            color: #ec4899; /* 深粉色 */
+        }
+    </style>
+</head>
+<body class="p-4 md:p-10">
+
+    <!-- 主容器 -->
+    <div class="max-w-7xl mx-auto bg-[#161b22] p-6 md:p-10 rounded-xl shadow-2xl">
+
+        <!-- 標題與簡介 -->
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-[#3b82f6] mb-3"> AI 學習應用 - NotebookLM</h1>
+            <p class="text-xl text-gray-400">打造 AI 知識助理：強化講義理解、考前準備與專題研究</p>
+        </header>
+
+        <!-- 一、 NotebookLM 的主要功能或工具 -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold border-b border-blue-700 pb-2 mb-6 text-white">一、核心功能一覽</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                <!-- 功能卡片 1: 資料匯入與管理 -->
+                <div class="feature-card bg-[#1f2937] p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-blue-400 mb-2">資料匯入與管理</h3>
+                    <div class="space-y-3 text-gray-300">
+                        <p><span class="text-[#60a5fa] font-bold">多元資料來源：</span> PDF、Docs、Slides、YouTube 連結、音訊檔等。</p>
+                        <p><span class="text-[#60a5fa] font-bold">知識庫建立：</span> 將多份資料集中管理，建立個人化知識庫。</p>
+                    </div>
+                </div>
+
+                <!-- 功能卡片 2: AI 內容分析與提問 -->
+                <div class="feature-card bg-[#1f2937] p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-blue-400 mb-2">AI 內容分析與提問</h3>
+                    <div class="space-y-3 text-gray-300">
+                        <p><span class="text-[#60a5fa] font-bold">AI 問答與引用：</span> 提問並獲取標明原始出處的詳細答案。</p>
+                        <p><span class="text-[#60a5fa] font-bold">智慧摘要/FAQ：</span> 自動提取重點、生成常見問題列表。</p>
+                        <p><span class="text-[#60a5fa] font-bold">心智圖：</span> 視覺化呈現資料間的邏輯關係。</p>
+                    </div>
+                </div>
+
+                <!-- 功能卡片 3: 學習與複習輔助 -->
+                <div class="feature-card bg-[#1f2937] p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-blue-400 mb-2">學習與複習輔助</h3>
+                    <div class="space-y-3 text-gray-300">
+                        <p><span class="text-[#60a5fa] font-bold">語音摘要：</span> 將文件轉為 Podcast 形式，隨時隨地複習。</p>
+                        <p><span class="text-[#60a5fa] font-bold">研讀指南：</span> 自動生成重要詞彙、模擬測驗題組 (附答案)。</p>
+                        <p><span class="text-[#60a5fa] font-bold">學習卡：</span> 用於記憶和測驗的記憶卡片。</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 二、 應用情境切換區 -->
+        <section>
+            <h2 class="text-2xl font-bold border-b border-blue-700 pb-2 mb-6 text-white">二、高中學習情境應用</h2>
+            
+            <!-- 頁籤導航欄 (Tabs) -->
+            <div class="flex flex-wrap border-b border-gray-700 mb-6" id="tab-navigation">
+                <button data-tab="lecture_notes" class="tab-button tab-active px-4 py-3 text-sm md:text-base transition duration-300 ease-in-out">講義整理解讀</button>
+                <button data-tab="exam_prep" class="tab-button tab-inactive px-4 py-3 text-sm md:text-base text-gray-400 transition duration-300 ease-in-out">考前自我練習</button>
+                <button data-tab="data_analysis" class="tab-button tab-inactive px-4 py-3 text-sm md:text-base text-gray-400 transition duration-300 ease-in-out">資料蒐集分析</button>
+                <button data-tab="self_learning" class="tab-button tab-inactive px-4 py-3 text-sm md:text-base text-gray-400 transition duration-300 ease-in-out">自主學習規劃</button>
+                <button data-tab="research_project" class="tab-button tab-inactive px-4 py-3 text-sm md:text-base text-gray-400 transition duration-300 ease-in-out">科展專題研究</button>
+                <!-- 任務(一) 頁籤按鈕，使用 task-tab-inactive 樣式來區別顏色 -->
+                <button data-tab="task_one" class="tab-button task-tab-inactive px-4 py-3 text-sm md:text-base transition duration-300 ease-in-out">任務(一)</button>
+            </div>
+
+            <!-- 頁籤內容區 (Tab Content) -->
+            <div id="tab-content">
+                
+                <!-- 1. 講義整理解讀 (預設顯示) -->
+                <div id="lecture_notes" class="tab-pane">
+                    <div class="overflow-x-auto rounded-lg">
+                        <table class="scenario-table">
+                            <thead>
+                                <tr>
+                                    <th class="w-1/6">應用情境</th>
+                                    <th class="w-2/6">NotebookLM 如何使用</th>
+                                    <th class="w-3/6">具體使用方法</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong class="text-white">整理解讀</strong></td>
+                                    <td><span class="text-[#60a5fa] font-bold">摘要與重點提取</span>：將冗長或複雜的講義、課本章節、學術文章快速濃縮，提取核心觀念。</td>
+                                    <td>
+                                        <div class="mb-3">
+                                            <span class="text-[#60a5fa] font-bold">步驟一：</span> 上傳單元講義 PDF 或 Google Docs 檔。
+                                        </div>
+                                        <div class="mb-3">
+                                            <span class="text-[#60a5fa] font-bold">步驟二：</span> 選擇<span class="text-yellow-300 font-semibold">「智慧摘要（Briefing Docs）」</span>功能，快速生成文件的詳細重點摘要。
+                                        </div>
+                                        <div class="mb-0">
+                                            <span class="text-[#60a5fa] font-bold">步驟三：</span> 在對話框提問：<span class="text-yellow-300 font-semibold">「請以高中生能理解的語氣，解釋牛頓第二定律與慣性定律的關係。」</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong class="text-white">概念視覺化</strong></td>
+                                    <td><span class="text-[#60a5fa] font-bold">心智圖</span>：視覺化地呈現講義中各知識點之間的邏輯層次和相互關聯，幫助建立知識架構。</td>
+                                    <td>
+                                        <div class="mb-3">
+                                            <span class="text-[#60a5fa] font-bold">步驟一：</span> 上傳整份章節講義或筆記。
+                                        </div>
+                                        <div class="mb-3">
+                                            <span class="text-[#60a5fa] font-bold">步驟二：</span> 選擇<span class="text-yellow-300 font-semibold">「心智圖」</span>功能，觀察系統生成的概念結構圖。
+                                        </div>
+                                        <div class="mb-0">
+                                            <span class="text-[#60a5fa] font-bold">步驟三：</span> 點擊心智圖上的任一節點，查看 NotebookLM 提供的該概念摘要。
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 2. 考前自我練習 -->
+                <div id="exam_prep" class="tab-pane hidden">
+                    <div class="overflow-x-auto rounded-lg">
+                        <table class="scenario-table">
+                            <thead>
+                                <tr>
+                                    <th class="w-1/6">應用情境</th>
+                                    <th class="w-2/6">NotebookLM 如何使用</th>
+                                    <th class="w-3/6">具體使用方法</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong class="text-white">模擬測驗</strong></td>
+                                    <td><span class="text-[#60a5fa] font-bold">研讀指南與測驗生成</span>：根據上傳的筆記或講義，自動生成客製化的測驗題組，進行自我檢視。</td>
+                                    <td>
+                                        <div class="mb-3">
+                                            <span class="text-[#60a5fa] font-bold">步驟一：</span> 上傳所有複習筆記和課後習題解答。
+                                        </div>
+                                        <div class="mb-0">
+                                            <span class="text-[#60a5fa] font-bold">步驟二：</span> 在對話框輸入指令：<span class="text-yellow-300 font-semibold">「請根據所有來源資料，為我生成一份包含 10 題選擇題和 3 題簡答題的模擬測驗，並提供完整的答案與解析。」</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong class="text-white">重點記憶</strong></td>
+                                    <td><span class="text-[#60a5fa] font-bold">學習卡</span>：針對重要詞彙、公式、歷史事件等生成記憶卡片，利用零碎時間加強記憶。</td>
+                                    <td>
+                                        <div class="mb-3">
+                                            <span class="text-[#60a5fa] font-bold">步驟一：</span> 上傳包含關鍵詞彙的資料（如化學元素表、歷史人名）。
+                                        </div>
+                                        <div class="mb-0">
+                                            <span class="text-[#60a5fa] font-bold">步驟二：</span> 在對話框輸入指令：<span class="text-yellow-300 font-semibold">「請為我生成所有重要詞彙與定義的學習卡。」</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong class="text-white">語音複習</strong></td>
+                                    <td><span class="text-[#60a5fa] font-bold">語音摘要</span>：將所有考前資料轉成音檔，隨時隨地用「聽」的方式複習。</td>
+                                    <td>
+                                        <div class="mb-3">
+                                            <span class="text-[#60a5fa] font-bold">步驟一：</span> 上傳考前整理的筆記。
+                                        </div>
+                                        <div class="mb-0">
+                                            <span class="text-[#60a5fa] font-bold">步驟二：</span> 選擇<span class="text-yellow-300 font-semibold">「語音摘要（Audio Overviews）」</span>功能，將複習資料轉成 Podcast 形式播放。
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 3. 資料蒐集分析 -->
+                <div id="data_analysis" class="tab-pane hidden">
+                    <div class="overflow-x-auto rounded-lg">
+                        <table class="scenario-table">
+                            <thead>
+                                <tr>
+                                    <th class="w-1/6">應用情境</th>
+                                    <th class="w-2/6">NotebookLM 如何使用</th>
+                                    <th class="w-3/6">具體使用方法</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong class="text-white">快速彙整</strong></td>
+                                    <td><span class="text-[#60a5fa] font-bold">多源資料整合</span>：將來自不同管道（PDF、網站、YouTube）的資料集中處理，避免切換平台。</td>
+                                    <td>
+                                        <div class="mb-3">
+                                            <span class="text-[#60a5fa] font-bold">步驟一：</span> 將蒐集到的多篇研究報告 PDF、相關 YouTube 講座連結、重要網頁文章等<span class="text-yellow-300 font-semibold">同時</span>上傳到一個筆記本。
+                                        </div>
+                                        <div class="mb-0">
+                                            <span class="text-[#60a5fa] font-bold">步驟二：</span> 在對話框輸入指令：<span class="text-yellow-300 font-semibold">「請比較資料中關於氣候變遷的兩種主要論點，並指出它們的主要差異。」</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong class="text-white">深度提問</strong></td>
+                                    <td><span class="text-[#60a5fa] font-bold">AI 問答與引用追溯</span>：針對複雜或有爭議的議題，深入提問，並確保 AI 回答內容有具體資料來源支持。</td>
+                                    <td>
+                                        <div class="mb-3">
+                                            <span class="text-[#60a5fa] font-bold">步驟一：</span> 在筆記本中提出一個有難度的研究問題，例如：<span class="text-yellow-300 font-semibold">「資料中提到的『永續發展』概念，有哪些具體的實施案例？」</span>
+                                        </div>
+                                        <div class="mb-0">
+                                            <span class="text-[#60a5fa] font-bold">步驟二：</span> 檢視 NotebookLM 的回答，<span class="text-yellow-300 font-semibold">點擊答案旁的引用編號</span>，追溯到原始文件段落，確認資訊的可靠性。
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 4. 自主學習規劃 -->
+                <div id="self_learning" class="tab-pane hidden">
+                    <div class="overflow-x-auto rounded-lg">
+                        <table class="scenario-table">
+                            <thead>
+                                <tr>
+                                    <th class="w-1/6">應用情境</th>
+                                    <th class="w-2/6">NotebookLM 如何使用</th>
+                                    <th class="w-3/6">具體使用方法</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong class="text-white">概念釐清</strong></td>
+                                    <td><span class="text-[#60a5fa] font-bold">FAQ</span>：針對某一主題自動生成常見問題，幫助學生從基本概念開始學習和檢查理解程度。</td>
+                                    <td>
+                                        <div class="mb-3">
+                                            <span class="text-[#60a5fa] font-bold">步驟一：</span> 上傳一個自主學習的主題資料（例如：初級程式設計教學文件）。
+                                        </div>
+                                        <div class="mb-0">
+                                            <span class="text-[#60a5fa] font-bold">步驟二：</span> 選擇<span class="text-yellow-300 font-semibold">「FAQ」</span>功能，查看系統自動生成的問題列表，並逐一回答或檢查理解。
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong class="text-white">計畫制定</strong></td>
+                                    <td><span class="text-[#60a5fa] font-bold">資訊重整</span>：將複雜的學習資源或目標進行結構化整理，轉化為可執行的步驟。</td>
+                                    <td>
+                                        <div class="mb-3">
+                                            <span class="text-[#60a5fa] font-bold">步驟一：</span> 上傳自主學習課程大綱、時間規劃表和預計成果要求文件。
+                                        </div>
+                                        <div class="mb-0">
+                                            <span class="text-[#60a5fa] font-bold">步驟二：</span> 在對話框輸入指令：<span class="text-yellow-300 font-semibold">「根據這些資料，請為我生成一份建議的每週學習進度表，並列出每個階段必須完成的作業。」</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 5. 科展專題研究 -->
+                <div id="research_project" class="tab-pane hidden">
+                    <div class="overflow-x-auto rounded-lg">
+                        <table class="scenario-table">
+                            <thead>
+                                <tr>
+                                    <th class="w-1/6">應用情境</th>
+                                    <th class="w-2/6">NotebookLM 如何使用</th>
+                                    <th class="w-3/6">具體使用方法</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong class="text-white">文獻回顧</strong></td>
+                                    <td><span class="text-[#60a5fa] font-bold">交叉分析</span>：將大量研究文獻上傳，讓 AI 找出不同文獻之間的共同點、差異或研究空白。</td>
+                                    <td>
+                                        <div class="mb-3">
+                                            <span class="text-[#60a5fa] font-bold">步驟一：</span> 上傳 10 篇以上的相關學術論文 PDF 檔。
+                                        </div>
+                                        <div class="mb-0">
+                                            <span class="text-[#60a5fa] font-bold">步驟二：</span> 在對話框輸入指令：<span class="text-yellow-300 font-semibold">「分析所有研究論文，找出他們對於『塑膠微粒在海洋生態中影響』的共識與分歧點。」</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong class="text-white">報告草稿</strong></td>
+                                    <td><span class="text-[#60a5fa] font-bold">結構化生成</span>：根據資料中的發現，要求 NotebookLM 協助建立報告的初稿結構。</td>
+                                    <td>
+                                        <div class="mb-3">
+                                            <span class="text-[#60a5fa] font-bold">步驟一：</span> 上傳所有的實驗數據、圖表解釋、研究發現等文件。
+                                        </div>
+                                        <div class="mb-0">
+                                            <span class="text-[#60a5fa] font-bold">步驟二：</span> 在對話框輸入指令：<span class="text-yellow-300 font-semibold">「請根據我的研究數據和發現，為我的科展專題建立一份完整的報告大綱，包括緒論、文獻探討、研究方法、結果與討論。」</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong class="text-white">專有名詞</strong></td>
+                                    <td><span class="text-[#60a5fa] font-bold">重要詞彙提取</span>：快速整理專題領域中所有關鍵的專有名詞。</td>
+                                    <td>在對話框輸入指令：<span class="text-yellow-300 font-semibold">「請從所有來源中提取所有與『XX 專題主題』相關的專有名詞及其簡要定義。」</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 6. 任務(一) (新增) -->
+                <div id="task_one" class="tab-pane hidden">
+                    <div class="bg-[#1f2937] p-8 rounded-xl border border-[#3b82f6]">
+                        <h3 class="text-3xl font-extrabold text-[#fcd34d] mb-6 border-b border-blue-600 pb-2">🎯 課堂任務 (一)：AI 知識比較與網頁生成</h3>
+
+                        <div class="space-y-6">
+                            <!-- Step 1 & 2 -->
+                            <div class="p-4 bg-[#283141] rounded-lg">
+                                <p class="text-lg mb-2"><span class="text-[#60a5fa] font-bold">步驟一 & 步驟二：知識差異探討</span></p>
+                                <p class="text-gray-300">
+                                    打開 <span class="text-[#60a5fa] font-bold">Gemini</span>，向 AI 提出問題：<span class="text-yellow-300 font-semibold">「AI模式」與「AI摘要」有什麼差異？</span>
+                                </p>
+                            </div>
+
+                            <!-- Step 3 -->
+                            <div class="p-4 bg-[#283141] rounded-lg">
+                                <p class="text-lg mb-2"><span class="text-[#60a5fa] font-bold">步驟三：結構化整理</span></p>
+                                <p class="text-gray-300">
+                                    向 AI 提出要求：<span class="text-yellow-300 font-semibold">請將上述內容整理成比較表格。</span>
+                                </p>
+                            </div>
+
+                            <!-- Step 4 & 5 (Canvas Creation & Iteration) -->
+                            <div class="p-4 bg-[#283141] rounded-lg">
+                                <p class="text-lg mb-2"><span class="text-[#60a5fa] font-bold">步驟四 & 步驟五：網頁視覺化與調整 (Canvas)</span></p>
+                                <p class="text-gray-300">
+                                    在 AI 工具欄中選擇 <span class="text-[#60a5fa] font-bold">Canvas</span> (或文件編輯區)，並向 AI 提出要求：
+                                    <span class="text-yellow-300 font-semibold">「請將上述內容製作成網頁版(簡報)，以 ooxx 風格呈現，... aabbbcc...」</span>
+                                </p>
+                                <p class="mt-2 text-sm text-gray-400">
+                                    (提示：<span class="text-[#60a5fa] font-bold">ooxx</span> 和 <span class="text-[#60a5fa] font-bold">aabbbcc</span> 為您的自訂風格和內容，請嘗試將風格定義得更具體，例如：<span class="text-yellow-300 font-semibold">以深藍色簡約科技風格呈現，並在表格中加入動態效果。</span>)
+                                </p>
+                                <p class="text-gray-300 mt-3">
+                                    <span class="text-[#60a5fa] font-bold">持續優化：</span> 在編輯器中可持續跟 AI 對話，將網頁修改至滿意為止。
+                                </p>
+                            </div>
+                            
+                            <!-- Step 6 (Sharing) -->
+                            <div class="p-4 bg-[#344154] rounded-lg border-l-4 border-green-500">
+                                <p class="text-lg mb-2"><span class="text-[#60a5fa] font-bold">步驟六：任務繳交 (分享)</span></p>
+                                <p class="text-gray-300">
+                                    點擊預覽視窗右上角的「<span class="text-[#60a5fa] font-bold">分享</span>」 按鈕：發佈你製作好的網頁網址並提交。
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+    <!-- JavaScript 頁籤切換邏輯 (與先前相同，無需變動) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+
+            // 處理頁籤切換
+            function switchTab(targetTabId) {
+                // 1. 隱藏所有內容區並移除 active 樣式
+                tabPanes.forEach(pane => {
+                    pane.classList.add('hidden');
+                });
+                tabButtons.forEach(button => {
+                    button.classList.remove('tab-active');
+                    
+                    // 檢查是否為任務按鈕，應用特定的非活躍樣式
+                    if (button.getAttribute('data-tab') === 'task_one') {
+                        button.classList.add('task-tab-inactive');
+                    } else {
+                        button.classList.add('tab-inactive', 'text-gray-400');
+                    }
+                    button.classList.remove('text-white');
+                });
+
+                // 2. 顯示目標內容區並設定 active 樣式
+                const activePane = document.getElementById(targetTabId);
+                const activeButton = document.querySelector(`.tab-button[data-tab="${targetTabId}"]`);
+
+                if (activePane) {
+                    activePane.classList.remove('hidden');
+                }
+                if (activeButton) {
+                    activeButton.classList.add('tab-active');
+                    // 確保活躍時移除所有非活躍的特殊樣式
+                    activeButton.classList.remove('tab-inactive', 'text-gray-400', 'task-tab-inactive'); 
+                    activeButton.classList.add('text-white');
+                }
+            }
+
+            // 監聽按鈕點擊事件
+            tabButtons.forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const targetTabId = event.currentTarget.getAttribute('data-tab');
+                    switchTab(targetTabId);
+                });
+            });
+
+            // 確保首次載入時，第一個頁籤是啟用的
+            switchTab('lecture_notes');
+        });
+    </script>
+
+</body>
+</html>
